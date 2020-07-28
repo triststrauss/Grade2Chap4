@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<img>
+<head>
+    <script src="blockly/blockly_compressed.js"></script>
+    <script src="blockly/javascript_compressed.js"></script>
+    <script src="blockly/blocks_compressed.js"></script>
+    <script src="blockly/msg/js/en.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+
+            <div id = "leftbox">
+                <div id="blockly-wrapper">
+                    <div id="blocklyDiv"></div>
+
+                    <div id="controls-wrapper">
+
+                        <button id="run-btn" onclick="onRunClicked()">Run</button>
+
+                        <img src="assets/webpage/python.png" class="solution-button" title="Show Python solution" onclick="displayPySol()"/>
+                        <img src="assets/webpage/js.png" class="solution-button" title="Show JavaScript solution" onclick="displayJsSol()"/>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="rightbox">
+                    <div id="top-div" class="">
+                        <div id="chapter-lesson-wrapper">
+                            <select id="lesson-select" onchange="changeLesson()" onload="changeLesson">
+                                <option value="1" selected>Lesson 1</option>
+                                <option value="2">Lesson 2</option>
+                                <option value="3">Lesson 3</option>
+                                <option value="4">Lesson 4</option>
+                                <option value="5">Lesson 5</option>
+                                <option value="6">Lesson 6</option>
+                                <option value="7">Lesson 7</option>
+                                <option value="8">Lesson 8</option>
+                                <option value="9">Lesson 9</option>
+                                <option value="10">Lesson 10</option>
+                            </select>
+                        </div>
+                        <p id="description-text"></p>
+                    </div>
+                <div id = "phaser"></div>
+            </div>
+
+<div id="modal" hidden>
+    <div id="success-content" hidden>
+        <p><center>You've completed the objective, are you ready for the next lesson?</center></p>
+        <div class="buttons-container">
+            <button onclick="changeLesson(currentLesson)">No</button>
+            <button onclick="changeLesson(currentLesson+1)">Yes</button>
+        </div>
+    </div>
+    <div id="failure-content" hidden>
+        <p><center>You have not completed the objective, please retry.<br>
+<!--        Click on the <img id="tip" title="Click here to show the hint!" src="assets/webpage/light_bulb.png"onclick="displayTip(currentLesson)"/> to show the hint!</center>-->
+        </p>
+        <div class="buttons-container">
+            <button onclick="changeLesson(currentLesson)">Okay</button>
+        </div>
+    </div>
+    <div id="outOfBound-content" hidden>
+        <p><center>You have crossed the bounds, please retry.</center><br>
+        </p>
+        <div class="buttons-container">
+            <button onclick="changeLesson(currentLesson)">Okay</button>
+        </div>
+    </div>
+    <div id="fire-content" hidden>
+        <p><center>Stay away from fire,Jump when Fire.</center><br>
+        </p>
+        <div class="buttons-container">
+            <button onclick="changeLesson(currentLesson)">Okay</button>
+        </div>
+    </div>
+    <div id="end-content" hidden>
+        <p><center>Congrats, you have completed all the lessons!</center></p>
+        <div class="buttons-container">
+            <button onclick="changeLesson(currentLesson)">Okay</button>
+        </div>
+    </div>
+    <div id="tip-content" hidden>
+        <p id="tip_text"></p>
+        <div class="buttons-container">
+            <button onclick="changeLesson(currentLesson)">Okay</button>
+        </div>
+    </div>
+
+    <div id="solution-content" hidden>
+        <p id="solution-text"></p>
+        <div class="buttons-container">
+            <button onclick="hideCodeSolution()">Okay</button>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js"></script>
+<script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+<script src="game.js"></script>
+<script src="blockly.js"></script>
+<script src="blocks.js"></script>
+
+<xml id="toolbox" style="display: flex;">
+    <block type="start_block"></block>
+    <block type="repeat_block"></block>
+    <block type="right_block"></block>
+    <block type="left_block"></block>
+    <block type="collect_block"></block>
+    <block type="jump_block"></block>
+<!--    <block type="fire_block"></block>-->
+<!--    <block type="if_block"></block>-->
+</xml>
+
+<script>
+
+    var options = {
+        toolbox : toolbox,
+        collapse : true,
+        maxBlocks : Infinity,
+        trashcan : true,
+        horizontalLayout : false,
+        toolboxPosition : 'start',
+        css : true,
+        scrollbars : true,
+        sounds : true,
+        oneBasedIndex : true,
+        theme : customTheme,
+    zoom : {
+            controls : true,
+            wheel : true,
+            startScale : 0.6,
+            maxScale : 3,
+            minScale : 0.3,
+            scaleSpeed : 1.2
+        }
+    };
+
+    var workspace = Blockly.inject('blocklyDiv', options,
+        {toolbox: document.getElementById('toolbox')});
+</script>
+</html>
