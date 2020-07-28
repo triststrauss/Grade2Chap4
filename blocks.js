@@ -35,7 +35,7 @@ Blockly.Blocks['collect_block'] = {
             .appendField("COLLECT");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(230);
+        this.setColour(330);
         this.setTooltip("Use to collect diamonds.");
         this.setHelpUrl("");
     }
@@ -120,7 +120,7 @@ Blockly.Blocks['jump_block'] = {
             .appendField("JUMP");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(230);
+        this.setColour(270);
         this.setTooltip("");
         this.setHelpUrl("");
     }

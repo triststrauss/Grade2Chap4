@@ -200,7 +200,7 @@ function addSoundsAndMusic()
         loop: true,
         delay :0,
     };
-    // music.play(musicConfig);
+    music.play(musicConfig);
 }
 
 function createBalls()
