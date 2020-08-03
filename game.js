@@ -94,7 +94,7 @@ var gridCells = [];
 var text;
 
 var music,collectSound,failSound,wrongCollect;
-var fire;
+fire = [];
 
 var currentGridCellId;
 
@@ -190,22 +190,37 @@ function createPlayer()
 
 function createFire()
 {
-    fire = game.add.sprite(0, 0, 'fire');
-    fire.anims.play(ANIM_FIRE,true);
-    fire.scale = 1.5;
-
+    for (let i = 0; i < 3; i++)
+    {
+        let fireLocal = game.add.sprite(0, 0, 'fire');
+        fireLocal.anims.play(ANIM_FIRE,true);
+        fireLocal.scale = 1.5;
+        fire.push(fireLocal);
+    }
 }
 
-var fireGridCellID;
+fireGridCellID  = [];
+
 function resetFire(index)
 {
-    var posX = 40 + (index * GRID_CELL_SIZE);
-    var posY = GRID_POS_Y - (25 * fire.scale);
+    for (let i = 0; i < fire.length; i++)
+    {
+        d("FIRE_INDEX : " + index[i]);
+        let fireLocal = fire[i];
+        let posX = 40 + (index[i] * GRID_CELL_SIZE);
+        let posY = GRID_POS_Y - (25 * fireLocal.scale);
 
-    fire.x = posX;
-    fire.y = posY;
-    fireGridCellID = getGridCell(posX,posY).id;
-    console.log("FIRE ID" + fireGridCellID);
+        fireLocal.x = posX;
+        fireLocal.y = posY;
+
+        let cell = getGridCell(posX,posY);
+        if(cell !== null)
+        {
+            fireGridCellID.push(cell.id);
+            console.log("FIRE ID" + fireGridCellID);
+        }
+
+    }
 }
 
 function addSoundsAndMusic()
@@ -242,7 +257,7 @@ function createBalls()
             balls[1] = new Ball(1,5,200,false);
             balls[2] = new Ball(2,7,500,false);
             balls[3] = new Ball(3,9,2000,false);
-            resetFire(2);
+            resetFire([2,5,15]);
             break;
         case 2://Identify 500
             balls[0] = new Ball(0,2,1,false);
@@ -439,10 +454,10 @@ function update()
             {
                 setPlayerAnimation(ANIM_JUMP);
                 velocityX = 1;
-                currentDestinationX = player.x + DISTANCE_TO_TRAVEL * velocityX;
+                currentDestinationX = player.x + DISTANCE_TO_TRAVEL * 2 * velocityX;
 
-                velocityX = getProjectileFromHeightAndRangeX(150,DISTANCE_TO_TRAVEL,GRAVITY);
-                velocityY = getProjectileFromHeightAndRangeY(150,DISTANCE_TO_TRAVEL,GRAVITY);
+                velocityX = getProjectileFromHeightAndRangeX(150,DISTANCE_TO_TRAVEL * 2,GRAVITY);
+                velocityY = getProjectileFromHeightAndRangeY(150,DISTANCE_TO_TRAVEL * 2,GRAVITY);
 
                 d(velocityY + " : "+ velocityX);
 
@@ -510,10 +525,16 @@ function update()
         outOfBoundsContentEle.hidden = false;
     }
 
-    if(currentGridCellId === fireGridCellID)
+    if(action !== ACTION_JUMP)
     {
-        modalEle.hidden = false;
-        fireContentEle.hidden = false;
+        for (let i = 0; i < fireGridCellID.length; i++)
+        {
+            if (currentGridCellId === fireGridCellID[i])
+            {
+                modalEle.hidden = false;
+                fireContentEle.hidden = false;
+            }
+        }
     }
 
     if(currentGridCellId !== 0)
