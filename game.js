@@ -49,7 +49,7 @@ const ACTION_LEFT = 1;
 const ACTION_RIGHT = 2;
 const ACTION_UP = 3;
 const ACTION_DOWN = 4;
-const ACTION_PICK = 5;
+const ACTION_COLLECT = 5;
 const ACTION_JUMP = 6;
 
 const ANIM_LEFT = 'left';
@@ -65,13 +65,14 @@ var isMoving;
 var velocityX = 0, velocityY = 0;
 var currentDestinationX, currentDestinationY;
 actionsQ = [];
+onCondiotionAction = [];
 
 var isPlaying;
 
 var grid;
 
 var player;
-var balls = [];
+var currency = [];
 
 
 var modalEle = document.getElementById("modal");
@@ -109,6 +110,8 @@ var moneyCollectedText;
 var prvAction;
 var action;
 var jumpVelocityX;
+
+var registeredActionForFire;
 
 
 function preload()
@@ -205,7 +208,6 @@ function resetFire(index)
 {
     for (let i = 0; i < fire.length; i++)
     {
-        d("FIRE_INDEX : " + index[i]);
         let fireLocal = fire[i];
         let posX = 40 + (index[i] * GRID_CELL_SIZE);
         let posY = GRID_POS_Y - (25 * fireLocal.scale);
@@ -217,7 +219,6 @@ function resetFire(index)
         if(cell !== null)
         {
             fireGridCellID.push(cell.id);
-            console.log("FIRE ID" + fireGridCellID);
         }
 
     }
@@ -241,95 +242,95 @@ function addSoundsAndMusic()
     music.play(musicConfig);
 }
 
-function createBalls()
+function createCurrencyAndResetFire()
 {
-    for (let i = 0; i < balls.length; i++)
+    for (let i = 0; i < currency.length; i++)
     {
-        removeBallAssets(balls[i])
+        removeBallAssets(currency[i])
     }
 
-    balls = [];
+    currency = [];
 
     switch (currentLesson)
     {
         case 1://Identify 100
-            balls[0] = new Ball(0,1,100,true);
-            balls[1] = new Ball(1,5,200,false);
-            balls[2] = new Ball(2,7,500,false);
-            balls[3] = new Ball(3,9,2000,false);
-            resetFire([2,5,15]);
+            currency[0] = new Currency(0,1,100,true);
+            currency[1] = new Currency(1,5,200,false);
+            currency[2] = new Currency(2,7,500,false);
+            currency[3] = new Currency(3,9,2000,false);
+            resetFire([2,15,15]);
             break;
         case 2://Identify 500
-            balls[0] = new Ball(0,2,1,false);
-            balls[1] = new Ball(1,3,5,false);
-            balls[2] = new Ball(2,4,10,false);
-            balls[3] = new Ball(3,7,2000,false);
-            balls[4] = new Ball(410,9,500,true);
-            resetFire(8);
+            currency[0] = new Currency(0,2,1,false);
+            currency[1] = new Currency(1,3,5,false);
+            currency[2] = new Currency(2,4,10,false);
+            currency[3] = new Currency(3,7,2000,false);
+            currency[4] = new Currency(410,9,500,true);
+            resetFire([5,8,15]);
             break;
         case 3://Identify 2000
-            balls[0] = new Ball(0,3,100,false);
-            balls[1] = new Ball(1,4,2000,true);
-            balls[2] = new Ball(2,6,200,false);
-            balls[3] = new Ball(3,9,500,false);
+            currency[0] = new Currency(0,3,100,false);
+            currency[1] = new Currency(1,4,2000,true);
+            currency[2] = new Currency(2,6,200,false);
+            currency[3] = new Currency(3,9,500,false);
             resetFire(5);
             break;
         case 4: //Collect All the currency.
-            balls[0] = new Ball(0,2,1,true);
-            balls[1] = new Ball(1,4,2,true);
-            balls[2] = new Ball(2,5,10,true);
-            balls[3] = new Ball(3,7,100,true);
-            balls[4] = new Ball(4,9,500,true);
+            currency[0] = new Currency(0,2,1,true);
+            currency[1] = new Currency(1,4,2,true);
+            currency[2] = new Currency(2,5,10,true);
+            currency[3] = new Currency(3,7,100,true);
+            currency[4] = new Currency(4,9,500,true);
             resetFire(3);
             break;
         case 5: //Collect All the currency.
-            balls[0] = new Ball(0,3,100,true);
-            balls[1] = new Ball(1,5,200,true);
-            balls[2] = new Ball(2,6,500,true);
-            balls[3] = new Ball(3,7,2000,true);
-            balls[4] = new Ball(4,11,50,true);
+            currency[0] = new Currency(0,3,100,true);
+            currency[1] = new Currency(1,5,200,true);
+            currency[2] = new Currency(2,6,500,true);
+            currency[3] = new Currency(3,7,2000,true);
+            currency[4] = new Currency(4,11,50,true);
             resetFire(4);
             break;
         case 6 : //Collect sum of 250.
-            balls[0] = new Ball(0,2,200,true);
-            balls[1] = new Ball(1,5,50,true);
-            balls[2] = new Ball(2,6,500,false);
-            balls[3] = new Ball(3,7,2000,false);
-            balls[4] = new Ball(4,12,5,false);
+            currency[0] = new Currency(0,2,200,true);
+            currency[1] = new Currency(1,5,50,true);
+            currency[2] = new Currency(2,6,500,false);
+            currency[3] = new Currency(3,7,2000,false);
+            currency[4] = new Currency(4,12,5,false);
             resetFire(9);
             break;
         case 7 : //Collect sum of 350.
-            balls[0] = new Ball(0,2,100,true);
-            balls[1] = new Ball(1,4,100,true);
-            balls[2] = new Ball(2,6,100,true);
-            balls[3] = new Ball(3,7,500,false);
-            balls[4] = new Ball(4,11,50,true);
+            currency[0] = new Currency(0,2,100,true);
+            currency[1] = new Currency(1,4,100,true);
+            currency[2] = new Currency(2,6,100,true);
+            currency[3] = new Currency(3,7,500,false);
+            currency[4] = new Currency(4,11,50,true);
             resetFire(8);
             break;
         case 8 : //Collect sum of 500.
-            balls[0] = new Ball(0,3,200,true);
-            balls[1] = new Ball(1,4,100,true);
-            balls[2] = new Ball(2,7,20,false);
-            balls[3] = new Ball(3,8,2000,false);
-            balls[4] = new Ball(4,12,200,true);
+            currency[0] = new Currency(0,3,200,true);
+            currency[1] = new Currency(1,4,100,true);
+            currency[2] = new Currency(2,7,20,false);
+            currency[3] = new Currency(3,8,2000,false);
+            currency[4] = new Currency(4,12,200,true);
             resetFire(9);
             break;
         case 9 : //Problem Solving (150)
-            balls[0] = new Ball(0,3,200,false);
-            balls[1] = new Ball(1,5,500,false);
-            balls[2] = new Ball(2,6,2000,false);
-            balls[3] = new Ball(3,7,50,true);
-            balls[4] = new Ball(4,9,50,true);
-            balls[5] = new Ball(5,12,50,true);
+            currency[0] = new Currency(0,3,200,false);
+            currency[1] = new Currency(1,5,500,false);
+            currency[2] = new Currency(2,6,2000,false);
+            currency[3] = new Currency(3,7,50,true);
+            currency[4] = new Currency(4,9,50,true);
+            currency[5] = new Currency(5,12,50,true);
             resetFire(10);
             break;
         case 10 : //Problem Solving (400)
-            balls[0] = new Ball(0,3,100,true);
-            balls[1] = new Ball(1,5,100,true);
-            balls[2] = new Ball(2,6,2000,false);
-            balls[3] = new Ball(3,7,500,false);
-            balls[4] = new Ball(4,9,200,true);
-            balls[5] = new Ball(5,12,500,false);
+            currency[0] = new Currency(0,3,100,true);
+            currency[1] = new Currency(1,5,100,true);
+            currency[2] = new Currency(2,6,2000,false);
+            currency[3] = new Currency(3,7,500,false);
+            currency[4] = new Currency(4,9,200,true);
+            currency[5] = new Currency(5,12,500,false);
             resetFire(10);
             break;
     }
@@ -401,6 +402,8 @@ function createAnimations(c)
         })
     });
 }
+var shouldPlayOnCondition;
+var onConditionActionIndex = 0;
 
 function update()
 {
@@ -408,8 +411,44 @@ function update()
     {
         if (actionsQ.length > 0)
         {
-            prvAction = action;
-            action = actionsQ.shift();
+
+            let prvShouldPlayOnCondition = shouldPlayOnConditon;
+
+            let tempActionTOCheck = actionsQ[0];
+
+            d("TEMP ACTION : " + tempActionTOCheck);
+
+            if(tempActionTOCheck === ACTION_COLLECT || onCondiotionAction.length === 0)
+            {
+                prvAction = action;
+                action = actionsQ.shift();
+            }
+            else
+            {
+                if (isNextFire() || shouldPlayOnConditon)
+                {
+                    if (prvShouldPlayOnCondition === false)
+                    {
+                        onConditionActionIndex = 0;
+                    }
+
+
+                    action = onCondiotionAction[onConditionActionIndex];
+                    onConditionActionIndex++;
+
+                    if (onConditionActionIndex === onCondiotionAction.length)
+                    {
+                        shouldPlayOnCondition = false;
+                    }
+
+                }
+                else
+                {
+                    prvAction = action;
+                    action = actionsQ.shift();
+                }
+            }
+
 
             if (action === ACTION_RIGHT || action === ACTION_LEFT)
             {
@@ -459,12 +498,10 @@ function update()
                 velocityX = getProjectileFromHeightAndRangeX(150,DISTANCE_TO_TRAVEL * 2,GRAVITY);
                 velocityY = getProjectileFromHeightAndRangeY(150,DISTANCE_TO_TRAVEL * 2,GRAVITY);
 
-                d(velocityY + " : "+ velocityX);
-
                 isMoving = true;
                 angle = 0;
             }
-            else if(action === ACTION_PICK)
+            else if(action === ACTION_COLLECT)
             {
                 checkForPickUp();
             }
@@ -481,7 +518,6 @@ function update()
         if(action === ACTION_JUMP)
         {
             velocityY += GRAVITY;
-            d(velocityY)
         }
         player.x += SPEED * velocityX;
         player.y += SPEED * velocityY;
@@ -500,6 +536,7 @@ function update()
         {
             velocityY = 0;
             velocityX = 0;
+            player.y = PLAYER_START_Y;
         }
 
         if(velocityX === 0 && velocityY === 0)
@@ -533,6 +570,7 @@ function update()
             {
                 modalEle.hidden = false;
                 fireContentEle.hidden = false;
+                velocityX = 0;
             }
         }
     }
@@ -563,41 +601,38 @@ function getProjectileFromHeightAndRangeY(height, range, gravity)
     return -vy;
 }
 
-function walk(action)
+function actionToPerform(action,isConditional)
 {
     if(!isPlaying)
         return;
 
-    actionsQ.push(action);
-    d("push " + action);
+    if(isConditional === 0)
+        actionsQ.push(action);
+    else
+        onCondiotionAction.push(action);
 }
 
 function collectDiamond()
 {
-    actionsQ.push(ACTION_PICK);
-    d("push " + ACTION_PICK);
+    actionsQ.push(ACTION_COLLECT);
 }
 
 function checkForPickUp()
 {
-    d("CHECK FOR PICK :" + balls.length);
 
     let ballPicked = false;
     let allCollected = true;
-    for (let i = 0; i < balls.length; i++)
+    for (let i = 0; i < currency.length; i++)
     {
-        d(balls[i].gridCell.id + "  -  " + currentGridCellId);
-
-        if(balls[i].gridCell.id === currentGridCellId)
+        if(currency[i].gridCell.id === currentGridCellId)
         {
 
             // balls[i].gameObject.anims.play(ANIM_COLLECT,true);
-            balls[i].isPicked = true;
-            removeBallAssets(balls[i]);
-            var numberPicked = balls[i].number;
+            currency[i].isPicked = true;
+            removeBallAssets(currency[i]);
+            var numberPicked = currency[i].number;
             collectSound.play();
             ballPicked = true;
-            d("NUMBER PICKED " + numberPicked);
 
             moneyCollected += numberPicked;
 
@@ -606,7 +641,7 @@ function checkForPickUp()
                 case 1:
                 case 2:
                 case 3:
-                    if(balls[i].isCorrectBall)
+                    if(currency[i].isCorrectBall)
                         displayTaskSuccess();
                     else
                         displayTaskFailed();
@@ -618,11 +653,11 @@ function checkForPickUp()
                 case 8:
                 case 9:
                 case 10:
-                    if(balls[i].isCorrectBall)
+                    if(currency[i].isCorrectBall)
                     {
-                        for (let j = 0; j < balls.length; j++)
+                        for (let j = 0; j < currency.length; j++)
                         {
-                            if(balls[j].isCorrectBall && !balls[j].isPicked)
+                            if(currency[j].isCorrectBall && !currency[j].isPicked)
                                 allCollected = false;
 
                         }
@@ -712,7 +747,7 @@ class GridCells
 }
 
 
-class Ball
+class Currency
 {
     constructor(id,index,number,correctBall)
     {
@@ -765,6 +800,13 @@ function getGridCell(x, y)
     return null;
 }
 
+function resetOnFireAction()
+{
+    onCondiotionAction = [];
+    onConditionActionIndex = 0;
+    shouldPlayOnConditon = false;
+}
+
 function changeLesson(q)
 {
     var selected = lesson_select.selectedIndex;
@@ -784,13 +826,17 @@ function changeLesson(q)
     d("CURRENT LESSON : " + currentLesson);
 
     // createGameObjects();
+    fireGridCellID = [];
+    registeredActionForFire = -1;
+
+    resetOnFireAction();
     resetMoneyCollected();
     resetPlayer();
-    createBalls();
+    createCurrencyAndResetFire();
     setPlaying(false);
     displayTask(currentLesson);
 
-    d("TOTAL BALLS " + balls.length);
+    d("TOTAL BALLS " + currency.length);
 
     modalEle.hidden = true;
     successContentEle.hidden = true;
@@ -946,8 +992,9 @@ function onRunClicked()
 function reset()
 {
     isPlaying = false;
+    resetOnFireAction();
     resetPlayer();
-    createBalls();
+    createCurrencyAndResetFire();
 }
 
 function setPlayerAnimation(animToSet)
@@ -967,7 +1014,14 @@ function ifBlock()
 
 function isNextFire()
 {
-    return currentGridCellId === fireGridCellID - 1;
+    for (let i = 0; i < fireGridCellID.length; i++)
+    {
+        if(currentGridCellId === fireGridCellID[i] - 1)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 function registerAction(action)
@@ -980,5 +1034,5 @@ function jump()
     // actionsQ.push(ACTION_UP);
     // actionsQ.push(ACTION_DOWN);
 
-    actionsQ.push(ACTION_JUMP);
+
 }

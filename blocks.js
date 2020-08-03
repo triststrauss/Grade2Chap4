@@ -23,7 +23,7 @@ Blockly.Blocks["repeat_block"] = {
         this.appendDummyInput()
             .appendField(new Blockly.FieldNumber(3, 0, 20), 'TIMES');
         this.appendStatementInput('DO')
-            .appendField(new Blockly.FieldImage('img/block_imgs/repeater.png', ARROW_BLOCK_WIDTH, ARROW_BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('assets/blocks/repeater.png', ARROW_BLOCK_WIDTH, ARROW_BLOCK_HEIGHT));
     }
 };
 Blockly.JavaScript['repeat_block'] = Blockly.JavaScript['controls_repeat_ext'];
@@ -62,7 +62,7 @@ Blockly.Blocks['right_block'] = {
 
 Blockly.JavaScript['right_block'] = function(block) {
     // TODO: Assemble JavaScript into code variable.
-    var code = 'walk(ACTION_RIGHT);\n';
+    var code = 'actionToPerform(ACTION_RIGHT,0);\n';
     return code;
 };
 
@@ -80,7 +80,7 @@ Blockly.Blocks['left_block'] = {
 
 Blockly.JavaScript['left_block'] = function(block) {
     // TODO: Assemble JavaScript into code variable.
-    var code = 'walk(ACTION_LEFT);\n';
+    var code = 'actionToPerform(ACTION_LEFT,0);\n';
     return code;
 };
 
@@ -88,7 +88,8 @@ Blockly.Blocks['if_block'] = {
     init: function() {
         this.appendValueInput("if")
             .setCheck(null)
-            .appendField("IF");
+            .appendField("IF")
+            .setAlign(Blockly.ALIGN_RIGHT);
         this.appendStatementInput("then")
             .setCheck(null)
             .appendField("THEN");
@@ -137,7 +138,7 @@ Blockly.JavaScript['fire_block'] = function(block) {
 
 Blockly.JavaScript['jump_block'] = function(block) {
     // TODO: Assemble JavaScript into code variable.
-    var code = 'jump();\n';
+    var code = 'actionToPerform(ACTION_JUMP,0);\n';
     return code;
 };
 
@@ -146,7 +147,7 @@ Blockly.JavaScript['if_block'] = function(block) {
     var value_if = Blockly.JavaScript.valueToCode(block, 'if', Blockly.JavaScript.ORDER_ATOMIC);
     var statements_then = Blockly.JavaScript.statementToCode(block, 'then');
     // TODO: Assemble JavaScript into code variable.
+    d("STATEMENT THEN : " + statements_then);
+    return statements_then.replace("0", "1");
 
-    var code = 'registerAction(ACTION_JUMP);\n';
-    return code;
 };

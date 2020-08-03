@@ -9,7 +9,7 @@ function run()
     isPlaying = false;
     resetMoneyCollected();
     resetPlayer();
-    createBalls();
+    createCurrencyAndResetFire();
 
     if (code !== '' )
     {
