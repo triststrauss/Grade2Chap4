@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
     width: 1120,
-    height: 480,
+    height: 516,
     parent: document.getElementById("phaser"),
     physics: {
         default: 'arcade',
@@ -19,7 +19,10 @@ var config = {
 var game = new Phaser.Game(config);
 
 
-const SPEED = 3;
+const SPEED = 1;
+const GRAVITY = 0.2;
+
+const GRID_POS_Y = 440;
 
 const GRID_CELL_SIZE = 80;
 const TOTAL_GRID_CELLS  = 12;
@@ -31,9 +34,9 @@ const ARROW_BLOCK_HEIGHT = 25;
 const ARROW_BLOCK_WIDTH = 50;
 
 const PLAYER_START_X = 40;
-const PLAYER_START_Y = 285;
+const PLAYER_START_Y = GRID_POS_Y - 40;
 
-const CURRENCY_POS_Y = 295;
+const CURRENCY_POS_Y = GRID_POS_Y - 25;
 
 const BANK_POS_X = 1080;
 const BANK_POS_Y = 285;
@@ -55,6 +58,8 @@ const ANIM_TURN = 'turn';
 const ANIM_IDLE = 'idle';
 const ANIM_COLLECT = 'collect';
 const ANIM_FIRE = 'fire';
+const ANIM_WALK = "walk";
+const ANIM_JUMP = "jump";
 
 var isMoving;
 var velocityX = 0, velocityY = 0;
@@ -100,6 +105,12 @@ var registeredActionForFire;
 var moneyCollected;
 var moneyCollectedText;
 
+
+var prvAction;
+var action;
+var jumpVelocityX;
+
+
 function preload()
 {
     //Images
@@ -130,8 +141,12 @@ function preload()
     this.load.audio("collect",["assets/audio/collect.mp3"]);
     this.load.audio("fail",["assets/audio/fail.wav"]);
     this.load.audio("wrongCollect",["assets/audio/wrongCollect.wav"]);
+
+    this.load.atlas('boy','assets/gameObjects/character/spritesheet.png','assets/gameObjects/character/spritesheet.json');
+
 }
 
+var boy;
 
 function create()
 {
@@ -146,6 +161,7 @@ function create()
     changeLesson(currentLesson);
     // piggyBank = game.add.image(BANK_POS_X,BANK_POS_Y,'piggyBank');
     moneyCollectedText = game.add.text(10, 10, '', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', color : '#000' , fontSize:'25px', fontStyle:'bold'});
+
 }
 
 function createGrids()
@@ -154,7 +170,7 @@ function createGrids()
     for (let i = 0; i < 14; i++)
     {
         var posX = GRID_CELL_SIZE/2 + (i * GRID_CELL_SIZE) ;
-        var posY = 320;
+        var posY = GRID_POS_Y;
         gridCells[k] = new GridCells(k,posX,posY);
         k++;
     }
@@ -162,22 +178,29 @@ function createGrids()
 
 function createPlayer()
 {
-    player = game.add.sprite(50, 50, 'dude');
-    player.setScale(1.5);
+    // player = game.add.sprite(50, 50, 'dude');
+    // player.setScale(1);
+
+
+    player = game.add.sprite(300, 300, 'boy','sprite1.png');
     player.depth = 10;
+
+    // player.play(ANIM_WALK);
 }
 
 function createFire()
 {
     fire = game.add.sprite(0, 0, 'fire');
     fire.anims.play(ANIM_FIRE,true);
+    fire.scale = 1.5;
+
 }
 
 var fireGridCellID;
 function resetFire(index)
 {
     var posX = 40 + (index * GRID_CELL_SIZE);
-    var posY = CURRENCY_POS_Y;
+    var posY = GRID_POS_Y - (25 * fire.scale);
 
     fire.x = posX;
     fire.y = posY;
@@ -306,18 +329,18 @@ function createAnimations(c)
         repeat: -1
     });
 
-    c.anims.create({
-        key: ANIM_TURN,
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
+    // c.anims.create({
+    //     key: ANIM_TURN,
+    //     frames: [ { key: 'dude', frame: 4 } ],
+    //     frameRate: 20
+    // });
 
-    c.anims.create({
-        key: ANIM_RIGHT,
-        frames: c.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
+    // c.anims.create({
+    //     key: ANIM_RIGHT,
+    //     frames: c.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
 
     c.anims.create({
         key: ANIM_FIRE,
@@ -325,11 +348,44 @@ function createAnimations(c)
         frameRate: 10,
         repeat: -1
     });
-}
 
-var prvAction;
-var action;
-var jumpVelocityX;
+    c.anims.create({
+        key:ANIM_TURN,
+        repeat : -1,
+        frameRate:10,
+        frames:c.anims.generateFrameNames('boy',{
+            prefix:'',
+            suffix:'.png',
+            start:7,
+            end:7
+        })
+    });
+
+
+    c.anims.create({
+        key:ANIM_RIGHT,
+        repeat : -1,
+        frameRate:10,
+        frames:c.anims.generateFrameNames('boy',{
+            prefix:'',
+            suffix:'.png',
+            start:1,
+            end:6
+        })
+    });
+
+    c.anims.create({
+        key:ANIM_JUMP,
+        repeat : 1,
+        frameRate:5,
+        frames:c.anims.generateFrameNames('boy',{
+            prefix:'',
+            suffix:'.png',
+            start:10,
+            end:10
+        })
+    });
+}
 
 function update()
 {
@@ -379,6 +435,20 @@ function update()
                 d('DESTINATION Y : ' + currentDestinationY);
                 isMoving = true;
             }
+            else if(action === ACTION_JUMP)
+            {
+                setPlayerAnimation(ANIM_JUMP);
+                velocityX = 1;
+                currentDestinationX = player.x + DISTANCE_TO_TRAVEL * velocityX;
+
+                velocityX = getProjectileFromHeightAndRangeX(150,DISTANCE_TO_TRAVEL,GRAVITY);
+                velocityY = getProjectileFromHeightAndRangeY(150,DISTANCE_TO_TRAVEL,GRAVITY);
+
+                d(velocityY + " : "+ velocityX);
+
+                isMoving = true;
+                angle = 0;
+            }
             else if(action === ACTION_PICK)
             {
                 checkForPickUp();
@@ -393,6 +463,11 @@ function update()
     }
     else
     {
+        if(action === ACTION_JUMP)
+        {
+            velocityY += GRAVITY;
+            d(velocityY)
+        }
         player.x += SPEED * velocityX;
         player.y += SPEED * velocityY;
 
@@ -404,6 +479,12 @@ function update()
         if(Math.abs(player.y - currentDestinationY) < SPEED)
         {
             velocityY = 0;
+        }
+
+        if(player.y > PLAYER_START_Y)
+        {
+            velocityY = 0;
+            velocityX = 0;
         }
 
         if(velocityX === 0 && velocityY === 0)
@@ -447,6 +528,19 @@ function update()
     moneyCollectedText.text = "Money Collected : " + moneyCollected ;
 }
 
+function getProjectileFromHeightAndRangeX(height, range, gravity)
+{
+    let vy = Math.sqrt(2 * gravity * height);
+    let vx = (range * gravity) / (2 * vy);
+    return vx;
+}
+
+function getProjectileFromHeightAndRangeY(height, range, gravity)
+{
+    let vy = Math.sqrt(2 * gravity * height);
+    let vx = (range * gravity) / (2 * vy);
+    return -vy;
+}
 
 function walk(action)
 {
@@ -862,6 +956,8 @@ function registerAction(action)
 
 function jump()
 {
-    actionsQ.push(ACTION_UP);
-    actionsQ.push(ACTION_DOWN);
+    // actionsQ.push(ACTION_UP);
+    // actionsQ.push(ACTION_DOWN);
+
+    actionsQ.push(ACTION_JUMP);
 }
