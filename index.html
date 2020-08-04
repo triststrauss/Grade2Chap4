@@ -5,9 +5,27 @@
     <script src="blockly/javascript_compressed.js"></script>
     <script src="blockly/blocks_compressed.js"></script>
     <script src="blockly/msg/js/en.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?<?php echo time(); ?>" />
 </head>
 <body class="bg">
+
+<div id="top-div" class="">
+    <div id="chapter-lesson-wrapper">
+        <select id="lesson-select" onchange="changeLesson()" onload="changeLesson">
+            <option value="1" selected>Lesson 1</option>
+            <option value="2">Lesson 2</option>
+            <option value="3">Lesson 3</option>
+            <option value="4">Lesson 4</option>
+            <option value="5">Lesson 5</option>
+            <option value="6">Lesson 6</option>
+            <option value="7">Lesson 7</option>
+            <option value="8">Lesson 8</option>
+            <option value="9">Lesson 9</option>
+            <option value="10">Lesson 10</option>
+        </select>
+    </div>
+    <p id="description-text"></p>
+</div>
 
             <div id = "leftbox">
                 <div id="blockly-wrapper">
@@ -25,23 +43,6 @@
             </div>
 
             <div id="rightbox">
-                    <div id="top-div" class="">
-                        <div id="chapter-lesson-wrapper">
-                            <select id="lesson-select" onchange="changeLesson()" onload="changeLesson">
-                                <option value="1" selected>Lesson 1</option>
-                                <option value="2">Lesson 2</option>
-                                <option value="3">Lesson 3</option>
-                                <option value="4">Lesson 4</option>
-                                <option value="5">Lesson 5</option>
-                                <option value="6">Lesson 6</option>
-                                <option value="7">Lesson 7</option>
-                                <option value="8">Lesson 8</option>
-                                <option value="9">Lesson 9</option>
-                                <option value="10">Lesson 10</option>
-                            </select>
-                        </div>
-                        <p id="description-text"></p>
-                    </div>
                 <div id = "phaser"></div>
             </div>
 

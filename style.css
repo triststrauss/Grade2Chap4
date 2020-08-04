@@ -17,15 +17,16 @@ body, html {
     background-size: cover;
 }
 #leftbox {
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     float:left;
     /*background:Red;*/
-    width:25%;
+    width:23%;
     height:280px;
+    padding-left: 1em;
 }
 
 #rightbox{
-    float:left;
+    float:right;
     /*background:blue;*/
     width:75%;
     height:280px;
@@ -35,8 +36,8 @@ body, html {
 #blocklyDiv
 {
     position: center;
-    height: 35em;
-    max-width: 20em;
+    height: 32.5em;
+    max-width: 22em;
     width: 50vw;
     /*box-shadow: 0px 0px 40px 20px #0ff;*/
 }
@@ -85,16 +86,16 @@ body, html {
 
 #top-div
 {
-    padding-left:  10em;
+    padding-left:  20em;
 }
 
 #chapter-lesson-wrapper
 {
-    display: flex;
+    /*display: flex;*/
     /*flex-direction: row;*/
     /*flex-wrap: wrap;*/
     /*width: 100%;*/
-    /*justify-content: center;*/
+    justify-content: center;
     padding-left: 20em;
 }
 

@@ -163,7 +163,7 @@ function create()
     addSoundsAndMusic();
     changeLesson(currentLesson);
     // piggyBank = game.add.image(BANK_POS_X,BANK_POS_Y,'piggyBank');
-    moneyCollectedText = game.add.text(10, 10, '', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', color : '#000' , fontSize:'25px', fontStyle:'bold'});
+    moneyCollectedText = game.add.text(400, 2, '', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', color : '#000' , fontSize:'25px', fontStyle:'bold'});
 
 }
 
@@ -255,83 +255,80 @@ function createCurrencyAndResetFire()
     {
         case 1://Identify 100
             currency[0] = new Currency(0,1,100,true);
-            currency[1] = new Currency(1,5,200,false);
-            currency[2] = new Currency(2,7,500,false);
-            currency[3] = new Currency(3,9,2000,false);
+            currency[1] = new Currency(1,5,1,false);
+            currency[2] = new Currency(2,7,5,false);
+            currency[3] = new Currency(3,9,50,false);
             resetFire([2,15,15]);
             break;
         case 2://Identify 500
             currency[0] = new Currency(0,2,1,false);
             currency[1] = new Currency(1,3,5,false);
             currency[2] = new Currency(2,4,10,false);
-            currency[3] = new Currency(3,7,2000,false);
-            currency[4] = new Currency(410,9,500,true);
-            resetFire([5,8,15]);
+            currency[3] = new Currency(3,7,20,false);
+            currency[4] = new Currency(410,13,500,true);
+            resetFire([5,9,15]);
             break;
         case 3://Identify 2000
-            currency[0] = new Currency(0,3,100,false);
+            currency[0] = new Currency(0,3,10,false);
             currency[1] = new Currency(1,4,2000,true);
-            currency[2] = new Currency(2,6,200,false);
-            currency[3] = new Currency(3,9,500,false);
-            resetFire(5);
+            currency[2] = new Currency(2,6,20,false);
+            currency[3] = new Currency(3,12,500,false);
+            resetFire([1,8,15]);
             break;
         case 4: //Collect All the currency.
             currency[0] = new Currency(0,2,1,true);
-            currency[1] = new Currency(1,4,2,true);
-            currency[2] = new Currency(2,5,10,true);
-            currency[3] = new Currency(3,7,100,true);
-            currency[4] = new Currency(4,9,500,true);
-            resetFire(3);
+            currency[1] = new Currency(1,7,2,true);
+            currency[2] = new Currency(2,9,10,true);
+            currency[3] = new Currency(3,13,100,true);
+            resetFire([3,10,15]);
             break;
         case 5: //Collect All the currency.
-            currency[0] = new Currency(0,3,100,true);
-            currency[1] = new Currency(1,5,200,true);
-            currency[2] = new Currency(2,6,500,true);
-            currency[3] = new Currency(3,7,2000,true);
-            currency[4] = new Currency(4,11,50,true);
-            resetFire(4);
+            currency[0] = new Currency(0,3,5,true);
+            currency[1] = new Currency(1,5,20,true);
+            currency[2] = new Currency(2,6,50,true);
+            currency[3] = new Currency(3,13,200,true);
+            resetFire([1,8,15]);
             break;
-        case 6 : //Collect sum of 250.
-            currency[0] = new Currency(0,2,200,true);
-            currency[1] = new Currency(1,5,50,true);
-            currency[2] = new Currency(2,6,500,false);
-            currency[3] = new Currency(3,7,2000,false);
-            currency[4] = new Currency(4,12,5,false);
-            resetFire(9);
+        case 6 : //Collect sum of 10.
+            currency[0] = new Currency(0,2,1,true);
+            currency[1] = new Currency(1,4,20,false);
+            currency[2] = new Currency(2,6,2,true);
+            currency[3] = new Currency(3,7,5,true);
+            currency[4] = new Currency(4,11,2,true);
+            resetFire([3,8,15]);
             break;
-        case 7 : //Collect sum of 350.
-            currency[0] = new Currency(0,2,100,true);
-            currency[1] = new Currency(1,4,100,true);
-            currency[2] = new Currency(2,6,100,true);
-            currency[3] = new Currency(3,7,500,false);
-            currency[4] = new Currency(4,11,50,true);
-            resetFire(8);
+        case 7 : //Collect sum of 50.
+            currency[0] = new Currency(0,4,200,false);
+            currency[1] = new Currency(1,5,20,true);
+            currency[2] = new Currency(2,7,20,true);
+            currency[3] = new Currency(3,13,10,true);
+            resetFire([2,9,15]);
             break;
-        case 8 : //Collect sum of 500.
-            currency[0] = new Currency(0,3,200,true);
-            currency[1] = new Currency(1,4,100,true);
-            currency[2] = new Currency(2,7,20,false);
-            currency[3] = new Currency(3,8,2000,false);
-            currency[4] = new Currency(4,12,200,true);
-            resetFire(9);
+        case 8 : //Collect sum of 80.
+            currency[0] = new Currency(0,3,200,false);
+            currency[1] = new Currency(1,4,20,true);
+            currency[2] = new Currency(2,7,10,true);
+            currency[3] = new Currency(3,8,500,false);
+            currency[4] = new Currency(4,12,50,true);
+            resetFire([1,10,15]);
             break;
-        case 9 : //Problem Solving (150)
+        case 9 : //Problem Solving (75)
             currency[0] = new Currency(0,3,200,false);
             currency[1] = new Currency(1,5,500,false);
-            currency[2] = new Currency(2,6,2000,false);
-            currency[3] = new Currency(3,7,50,true);
-            currency[4] = new Currency(4,9,50,true);
-            currency[5] = new Currency(5,12,50,true);
-            resetFire(10);
+            currency[2] = new Currency(2,6,50,true);
+            currency[3] = new Currency(3,7,20,true);
+            currency[4] = new Currency(4,9,100,false);
+            currency[5] = new Currency(5,13,5,true);
+            resetFire([1,10.15]);
             break;
-        case 10 : //Problem Solving (400)
-            currency[0] = new Currency(0,3,100,true);
-            currency[1] = new Currency(1,5,100,true);
-            currency[2] = new Currency(2,6,2000,false);
-            currency[3] = new Currency(3,7,500,false);
-            currency[4] = new Currency(4,9,200,true);
-            currency[5] = new Currency(5,12,500,false);
-            resetFire(10);
+        case 10 : //Problem Solving (60)
+            currency[0] = new Currency(0,2,100,false);
+            currency[1] = new Currency(1,5,50,true);
+            currency[2] = new Currency(2,6,5,true);
+            currency[3] = new Currency(3,11,200,false);
+            currency[4] = new Currency(4,12,500,false);
+            currency[5] = new Currency(5,13,5,true);
+            resetFire([3,8,15]);
             break;
     }
 }
@@ -411,7 +408,6 @@ function update()
     {
         if (actionsQ.length > 0)
         {
-
             let prvShouldPlayOnCondition = shouldPlayOnConditon;
 
             let tempActionTOCheck = actionsQ[0];
@@ -911,19 +907,19 @@ function displayTask(index)
             description.innerHTML = "Collect all the money.";
             break;
         case 6:
-            description.innerHTML = "Collect 250 Rupees.";
+            description.innerHTML = "Collect 10 Rupees.";
             break;
         case 7:
-            description.innerHTML = "Collect 350 Rupees.";
+            description.innerHTML = "Collect 50 Rupees.";
             break;
         case 8:
-            description.innerHTML = "Collect 500 Rupees.";
+            description.innerHTML = "Collect 80 Rupees.";
             break;
         case 9:
-            description.innerHTML = "One ball costs Rupees 50, Collect money for 3 balls.";
+            description.innerHTML = "One ball costs Rupees 25, Collect money for 3 balls.";
             break;
         case 10:
-            description.innerHTML = "One Racket costs Rupees 100, Collect money for 4 Rackets.";
+            description.innerHTML = "One pen costs Rupees 15, Collect money for 4 pens.";
             break;
     }
 }
