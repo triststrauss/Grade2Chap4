@@ -37,3 +37,56 @@ var customTheme = Blockly.Theme.defineTheme('MyTheme', {
         'cursorColour': '#d0d0d0'
     }
 });
+
+// start_block
+// repeat_block
+// right_block
+// collect_block
+// jump_block
+// fire_block
+// if_block
+
+
+function manageBlocks()
+{
+    switch(currentLesson)
+    {
+        case 1:
+            var toolbox = '<xml>';
+            toolbox += '  <block type="start_block"></block>';
+            toolbox += '  <block type="right_block"></block>';
+            toolbox += '  <block type="collect_block"></block>';
+            toolbox += '</xml>';
+            break;
+        case 2:
+            var toolbox = '<xml>';
+            toolbox += '  <block type="start_block"></block>';
+            toolbox += '  <block type="right_block"></block>';
+            toolbox += '  <block type="repeat_block"></block>';
+            toolbox += '  <block type="collect_block"></block>';
+            toolbox += '</xml>';
+            break;
+        case 3:
+            var toolbox = '<xml>';
+            toolbox += '  <block type="start_block"></block>';
+            toolbox += '  <block type="right_block"></block>';
+            toolbox += '  <block type="repeat_block"></block>';
+            toolbox += '  <block type="collect_block"></block>';
+            toolbox += '  <block type="jump_block"></block>';
+            toolbox += '</xml>';
+            break;
+        default:
+            var toolbox = '<xml>';
+            toolbox += '  <block type="start_block"></block>';
+            toolbox += '  <block type="right_block"></block>';
+            toolbox += '  <block type="repeat_block"></block>';
+            toolbox += '  <block type="collect_block"></block>';
+            toolbox += '  <block type="jump_block"></block>';
+            toolbox += '  <block type="if_block"></block>';
+            toolbox += '  <block type="fire_block"></block>';
+            toolbox += '</xml>';
+            break;
+    }
+
+    workspace.updateToolbox(toolbox);
+}

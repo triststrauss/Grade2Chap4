@@ -88,11 +88,11 @@ Blockly.Blocks['if_block'] = {
     init: function() {
         this.appendValueInput("if")
             .setCheck(null)
-            .appendField("IF")
+            .appendField("Forever If")
             .setAlign(Blockly.ALIGN_RIGHT);
         this.appendStatementInput("then")
             .setCheck(null)
-            .appendField("THEN");
+            .appendField("Then");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(230);

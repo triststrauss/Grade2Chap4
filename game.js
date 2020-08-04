@@ -19,7 +19,7 @@ var config = {
 var game = new Phaser.Game(config);
 
 
-const SPEED = 1;
+const SPEED = 2;
 const GRAVITY = 0.2;
 
 const GRID_POS_Y = 440;
@@ -256,42 +256,51 @@ function createCurrencyAndResetFire()
     switch (currentLesson)
     {
         case 1://Identify 100
-            currency[0] = new Currency(0,1,100,true);
-            currency[1] = new Currency(1,5,1,false);
-            currency[2] = new Currency(2,7,5,false);
-            currency[3] = new Currency(3,9,50,false);
-            resetFire([2,15,15]);
+            currency[0] = new Currency(0,1,200,false);
+            currency[1] = new Currency(1,3,5,false);
+            currency[2] = new Currency(2,4,100,true);
+            currency[3] = new Currency(3,7,50,false);
+            currency[4] = new Currency(4,9,1,false);
+            resetFire([15,15,15]);
             break;
         case 2://Identify 500
             currency[0] = new Currency(0,2,1,false);
             currency[1] = new Currency(1,3,5,false);
             currency[2] = new Currency(2,4,10,false);
-            currency[3] = new Currency(3,7,20,false);
-            currency[4] = new Currency(410,13,500,true);
-            resetFire([5,9,15]);
+            currency[3] = new Currency(3,7,500,true);
+            currency[4] = new Currency(4,13,50,false);
+            resetFire([15,15,15]);
             break;
         case 3://Identify 2000
-            currency[0] = new Currency(0,3,10,false);
+            currency[0] = new Currency(0,1,10,false);
             currency[1] = new Currency(1,4,2000,true);
             currency[2] = new Currency(2,6,20,false);
             currency[3] = new Currency(3,12,500,false);
-            resetFire([1,8,15]);
+            resetFire([2,15,15]);
             break;
         case 4: //Collect All the currency.
             currency[0] = new Currency(0,2,1,true);
-            currency[1] = new Currency(1,7,2,true);
-            currency[2] = new Currency(2,9,10,true);
-            currency[3] = new Currency(3,13,100,true);
+            currency[1] = new Currency(1,6,2,true);
+            currency[2] = new Currency(2,8,10,true);
+            currency[3] = new Currency(3,12,100,true);
             resetFire([3,10,15]);
             break;
         case 5: //Collect All the currency.
             currency[0] = new Currency(0,3,5,true);
             currency[1] = new Currency(1,5,20,true);
-            currency[2] = new Currency(2,6,50,true);
-            currency[3] = new Currency(3,13,200,true);
+            currency[2] = new Currency(2,7,50,true);
+            currency[3] = new Currency(3,11,200,true);
             resetFire([1,8,15]);
             break;
-        case 6 : //Collect sum of 10.
+        case 6 : //Collect All Currency
+            currency[0] = new Currency(0,2,200,true);
+            currency[1] = new Currency(1,6,500,true);
+            currency[2] = new Currency(2,10,2000,true);
+            currency[3] = new Currency(3,12,100,true);
+            currency[4] = new Currency(4,13,50,true);
+            resetFire([3,7,15]);
+            break;
+        case 7 : //Collect sum of 10.
             currency[0] = new Currency(0,2,1,true);
             currency[1] = new Currency(1,4,20,false);
             currency[2] = new Currency(2,6,2,true);
@@ -299,17 +308,10 @@ function createCurrencyAndResetFire()
             currency[4] = new Currency(4,11,2,true);
             resetFire([3,8,15]);
             break;
-        case 7 : //Collect sum of 50.
-            currency[0] = new Currency(0,4,200,false);
-            currency[1] = new Currency(1,5,20,true);
-            currency[2] = new Currency(2,7,20,true);
-            currency[3] = new Currency(3,13,10,true);
-            resetFire([2,9,15]);
-            break;
         case 8 : //Collect sum of 80.
             currency[0] = new Currency(0,3,200,false);
             currency[1] = new Currency(1,4,20,true);
-            currency[2] = new Currency(2,7,10,true);
+            currency[2] = new Currency(2,6,10,true);
             currency[3] = new Currency(3,8,500,false);
             currency[4] = new Currency(4,12,50,true);
             resetFire([1,10,15]);
@@ -380,7 +382,7 @@ function createAnimations(c)
     c.anims.create({
         key:ANIM_RIGHT,
         repeat : -1,
-        frameRate:10,
+        frameRate:15,
         frames:c.anims.generateFrameNames('boy',{
             prefix:'',
             suffix:'.png',
@@ -507,7 +509,7 @@ function update()
         }
         else
         {
-            if(currentPlayerAnimation !== ANIM_TURN)
+            if(currentPlayerAnimation !== ANIM_TURN && !isSuccess)
                 wrongCollect.play();
             setPlayerAnimation(ANIM_TURN);
         }
@@ -693,10 +695,11 @@ function displayTaskFailed()
     modalEle.hidden = false;
     FailureContentEle.hidden = false;
 }
-
+var isSuccess = false;
 function displayTaskSuccess()
 {
     d("Task Success");
+    isSuccess = true;
     modalEle.hidden = false;
     if(currentLesson === 10)
         endContentEle.hidden = false;
@@ -827,6 +830,7 @@ function changeLesson(q)
     // createGameObjects();
     fireGridCellID = [];
     registeredActionForFire = -1;
+    isSuccess = false;
 
     resetOnFireAction();
     resetMoneyCollected();
@@ -844,6 +848,8 @@ function changeLesson(q)
     outOfBoundsContentEle.hidden = true;
     TipContentEle.hidden = true;
     fireContentEle.hidden = true;
+
+    manageBlocks();
 }
 
 function displayTip(index)
@@ -910,10 +916,10 @@ function displayTask(index)
             description.innerHTML = "Collect all the money.";
             break;
         case 6:
-            description.innerHTML = "Collect 10 Rupees.";
+            description.innerHTML = "Collect all the money.";
             break;
         case 7:
-            description.innerHTML = "Collect 50 Rupees.";
+            description.innerHTML = "Collect 10 Rupees.";
             break;
         case 8:
             description.innerHTML = "Collect 80 Rupees.";
@@ -991,6 +997,7 @@ function onRunClicked()
 function reset()
 {
     isPlaying = false;
+    isSuccess = false;
     resetOnFireAction();
     resetPlayer();
     createCurrencyAndResetFire();
