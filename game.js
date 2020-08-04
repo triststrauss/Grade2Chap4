@@ -83,6 +83,8 @@ var TipContentEle = document.getElementById("tip-content");
 var TipTextEle = document.getElementById("tip_text");
 var outOfBoundsContentEle = document.getElementById("outOfBound-content");
 var fireContentEle = document.getElementById("fire-content");
+var initialHintEle = document.getElementById("initial-hint");
+var initialHintText = document.getElementById("initial-hint-text");
 
 var charSelectEle = document.getElementById("character-select-content");
 
@@ -848,8 +850,40 @@ function changeLesson(q)
     outOfBoundsContentEle.hidden = true;
     TipContentEle.hidden = true;
     fireContentEle.hidden = true;
+    initialHintEle.hidden = true;
 
     manageBlocks();
+
+    if(currentLesson <= 3)
+    {
+        showInitialHint();
+    }
+}
+
+function showInitialHint()
+{
+    modalEle.hidden = false;
+    initialHintEle.hidden = false;
+
+    switch (currentLesson)
+    {
+        case 1:
+            initialHintText.innerHTML = 'Here is how the 100 Rupees note looks like! &nbsp<img id="tip-image" src="assets/realCurrency/100.png"/>';
+            break;
+        case 2:
+            initialHintText.innerHTML = 'Here is how the 500 Rupees note looks like! &nbsp<img id="tip-image" src="assets/realCurrency/500.png"/>';
+            break;
+        case 3:
+            initialHintText.innerHTML = 'Here is how the 2000 Rupees note looks like! &nbsp<img id="tip-image" src="assets/realCurrency/2000.png"/>';
+            break;
+    }
+}
+
+function hideInitialHint()
+{
+    modalEle.hidden = true;
+    initialHintEle.hidden = true;
+
 }
 
 function displayTip(index)

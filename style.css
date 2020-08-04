@@ -56,7 +56,7 @@ body, html {
 
     color: rgb(41, 41, 41);
 }
-#success-content, #failure-content, #end-content, #tip-content, #character-select-content, #solution-content,#outOfBound-content,#fire-content {
+#success-content, #failure-content, #end-content, #tip-content, #character-select-content, #solution-content,#outOfBound-content,#fire-content, #initial-hint {
     position:relative;
     background-color: rgb(236, 236, 236);
     padding: 1.5em;
@@ -106,7 +106,7 @@ body, html {
     padding: 0.2em 0.2em;
 }
 
-#description-text, #solution-text {
+#description-text, #solution-text,#initial-hint-text {
     margin: 1em 0.5em;
     padding: 0.5em 2em;
     max-width: 700px;
@@ -117,7 +117,7 @@ body, html {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-#description-text
+#description-text,#initial-hint-text
 {
     text-align:center;
     background-color: rgb(42, 45, 119);
@@ -152,4 +152,10 @@ body, html {
     width: 6em;
     font-size: 30px;
     background-color: #3366cc;
+}
+
+#tip-image
+{
+    padding-top: 2em;
+    /*padding-left: 1em;*/
 }
