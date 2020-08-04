@@ -20,16 +20,17 @@ body, html {
     /*padding-top: 50px;*/
     float:left;
     /*background:Red;*/
-    width:23%;
-    height:280px;
+    width:24em;
+    height:35em;
     padding-left: 1em;
 }
 
-#rightbox{
-    float:right;
+#rightbox
+{
+    float:left;
     /*background:blue;*/
-    width:75%;
-    height:280px;
+    width:60em;
+    height:35em;
 }
 
 
