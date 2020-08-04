@@ -94,7 +94,7 @@ var currentLesson = 1;
 var gridCells = [];
 var text;
 
-var music,collectSound,failSound,wrongCollect;
+var music,collectSound,failSound,wrongCollect,jumpSound;
 fire = [];
 
 var currentGridCellId;
@@ -144,6 +144,7 @@ function preload()
     this.load.audio("collect",["assets/audio/collect.mp3"]);
     this.load.audio("fail",["assets/audio/fail.wav"]);
     this.load.audio("wrongCollect",["assets/audio/wrongCollect.wav"]);
+    this.load.audio("jumpSound",["assets/audio/jump.wav"]);
 
     this.load.atlas('boy','assets/gameObjects/character/spritesheet.png','assets/gameObjects/character/spritesheet.json');
 
@@ -230,6 +231,7 @@ function addSoundsAndMusic()
     failSound = game.sound.add("fail");
     music = game.sound.add("music");
     wrongCollect = game.sound.add("wrongCollect");
+    jumpSound = game.sound.add("jumpSound");
     var musicConfig = {
         mute: false,
         volume: 1,
@@ -488,6 +490,7 @@ function update()
             else if(action === ACTION_JUMP)
             {
                 setPlayerAnimation(ANIM_JUMP);
+                jumpSound.play();
                 velocityX = 1;
                 currentDestinationX = player.x + DISTANCE_TO_TRAVEL * 2 * velocityX;
 
