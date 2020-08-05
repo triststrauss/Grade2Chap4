@@ -20,6 +20,7 @@ var game = new Phaser.Game(config);
 
 
 const SPEED = 2;
+const JUMP_SPEED = 1;
 const GRAVITY = 0.2;
 
 const GRID_POS_Y = 440;
@@ -521,9 +522,15 @@ function update()
         if(action === ACTION_JUMP)
         {
             velocityY += GRAVITY;
+            player.x += JUMP_SPEED * velocityX;
+            player.y += JUMP_SPEED * velocityY;
         }
-        player.x += SPEED * velocityX;
-        player.y += SPEED * velocityY;
+        else
+        {
+            player.x += SPEED * velocityX;
+            player.y += SPEED * velocityY;
+        }
+
 
         if (Math.abs(player.x - currentDestinationX) < SPEED)
         {
