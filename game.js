@@ -1,6 +1,6 @@
 var config = {
     type: Phaser.AUTO,
-    width: 1120,
+    width: 1040,
     height: 516,
     parent: document.getElementById("phaser"),
     physics: {
@@ -167,7 +167,7 @@ function create()
     addSoundsAndMusic();
     changeLesson(currentLesson);
     // piggyBank = game.add.image(BANK_POS_X,BANK_POS_Y,'piggyBank');
-    moneyCollectedText = game.add.text(400, 2, '', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', color : '#000' , fontSize:'25px', fontStyle:'bold'});
+    moneyCollectedText = game.add.text(380, 2, '', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', color : '#000' , fontSize:'25px', fontStyle:'bold'});
 
 }
 
@@ -271,7 +271,7 @@ function createCurrencyAndResetFire()
             currency[1] = new Currency(1,3,5,false);
             currency[2] = new Currency(2,4,10,false);
             currency[3] = new Currency(3,7,500,true);
-            currency[4] = new Currency(4,13,50,false);
+            currency[4] = new Currency(4,12,50,false);
             resetFire([15,15,15]);
             break;
         case 3://Identify 2000
@@ -299,8 +299,8 @@ function createCurrencyAndResetFire()
             currency[0] = new Currency(0,2,200,true);
             currency[1] = new Currency(1,6,500,true);
             currency[2] = new Currency(2,10,2000,true);
-            currency[3] = new Currency(3,12,100,true);
-            currency[4] = new Currency(4,13,50,true);
+            currency[3] = new Currency(3,11,100,true);
+            currency[4] = new Currency(4,12,50,true);
             resetFire([3,7,15]);
             break;
         case 7 : //Collect sum of 10.
@@ -325,16 +325,16 @@ function createCurrencyAndResetFire()
             currency[2] = new Currency(2,6,50,true);
             currency[3] = new Currency(3,7,20,true);
             currency[4] = new Currency(4,9,100,false);
-            currency[5] = new Currency(5,13,5,true);
+            currency[5] = new Currency(5,12,5,true);
             resetFire([1,10.15]);
             break;
         case 10 : //Problem Solving (60)
             currency[0] = new Currency(0,2,100,false);
             currency[1] = new Currency(1,5,50,true);
             currency[2] = new Currency(2,6,5,true);
-            currency[3] = new Currency(3,11,200,false);
-            currency[4] = new Currency(4,12,500,false);
-            currency[5] = new Currency(5,13,5,true);
+            currency[3] = new Currency(3,10,200,false);
+            currency[4] = new Currency(4,11,500,false);
+            currency[5] = new Currency(5,12,5,true);
             resetFire([3,8,15]);
             break;
     }
